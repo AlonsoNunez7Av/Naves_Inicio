@@ -5,7 +5,13 @@
 CGame::CGame()
 
 {
-	int estado = 0; ///ACT2: Aqui debes de iniciar tu estado, con el nuevo estado inicial. Esto que tienes no es correcto.
+	int estado = 0; 
+	
+	///ACT2:Mal, Debes de poner que estado sera el inicial, no debiste mover el motor de estados, ese estaba bien en su lugar, dentro del While, para que siempre
+	//Se este ejecutando. Pero es necesario que el juego le indiques que estado sera el primero en ejecutarse. 
+	//El int estado = 0; No debe de llevar el int.
+	//Dejalo como esta y solo compone lo de la parte de arriba "int estado = 0;"
+
 	//Maquina de estados
 
 	switch (estado){

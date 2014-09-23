@@ -1,21 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Game.h"
+#include <SDL_image.h>
+#include <SDL.h>
 
-CGame::CGame()
-
-{
-	estado = ESTADO_INICIANDO; 
+CGame::CGame(){
 	
-	///ACT2:Mal, Debes de poner que estado sera el inicial, no debiste mover el motor de estados, ese estaba bien en su lugar, dentro del While, para que siempre
-	//Se este ejecutando. Pero es necesario que el juego le indiques que estado sera el primero en ejecutarse. 
-	//El int estado = 0; No debe de llevar el int.
-	//Dejalo como esta y solo compone lo de la parte de arriba "int estado = 0;"
+	estado = ESTADO_INICIANDO; 
+	SDL_Surface * screen;
+	atexit(SDL_Quit);
+
+	if (SDL_Init(SDL_INIT_VIDEO)<0){
+		printf("Error %s ", SDL_GetError());
+		exit(EXIT_FAILURE);	
+
+		screen = SDL_SetVideoMode(640, 480, 24, SDL_SWSURFACE);
+	}
+	    	    
+	if (screen == NULL){
+		printf("Error %s ", SDL_GetError());
+		exit(EXIT_FAILURE); 
+	}
+	    SDL_Flip(screen);
+	    SDL_WM_SetCaption("Mi primer Juego", NULL);
 	
 }
+        
 
 // Con esta función eliminaremos todos los elementos en pantalla
 void CGame::Finalize(){
+	SDL_Quit();
 }
 
 bool CGame::Start()
@@ -46,6 +60,7 @@ bool CGame::Start()
 		break;
 
 		};
+		SDL_Flip(screen);
 		
     }
 	return true;

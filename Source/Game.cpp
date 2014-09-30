@@ -10,7 +10,7 @@ CGame::CGame(){
 
 	
 	
-
+	/////ACT3: ESto no va aqui, revisa la actividad 3 nuevamente.
 	if (SDL_Init(SDL_INIT_VIDEO)){
 		printf("Error %s ", SDL_GetError());
 		exit(EXIT_FAILURE);	
@@ -25,7 +25,7 @@ CGame::CGame(){
 	}
 	    SDL_Flip(screen);
 	    SDL_WM_SetCaption("Mi primer Juego", NULL);
-	
+	///////
 }
         
 

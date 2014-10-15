@@ -1,36 +1,43 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "Game.h"
 #include <SDL_image.h>
 #include <SDL.h>
+#include "Config.h"
+#include "Sprite.h"
 
-CGame::CGame(){
-	estado = ESTADO_INICIANDO;
+CGame::CGame()
+{
+	estado = Estado::ESTADO_INICIANDO;
 	atexit(SDL_Quit);
+}
+void CGame::Iniciando(){
 
-	
-	
 
-	if (SDL_Init(SDL_INIT_VIDEO)){
+
+
+	if (SDL_Init(SDL_INIT_AUDIO)){
 		printf("Error %s ", SDL_GetError());
-		exit(EXIT_FAILURE);	
+		exit(EXIT_FAILURE);
 
 	}
 
-	screen = SDL_SetVideoMode(640, 480, 24, SDL_SWSURFACE);
-	    	    
+	screen = SDL_SetVideoMode(WIDTH_SCREEN, HEIGTH_SCREEN, 24, SDL_HWSURFACE);
+
 	if (screen == NULL){
 		printf("Error %s ", SDL_GetError());
-		exit(EXIT_FAILURE); 
+		exit(EXIT_FAILURE);
 	}
-	    SDL_Flip(screen);
-	    SDL_WM_SetCaption("Mi primer Juego", NULL);
-	
+	SDL_Flip(screen);
+	SDL_WM_SetCaption("Mi primer Juego", NULL);
+	nave = new Nave (screen);
+	//nave -> CargarImagen("../Data/minave.bmp");
 }
-        
 
-// Con esta función eliminaremos todos los elementos en pantalla
-void CGame::Finalize(){
+
+void CGame::Finalize()
+{
 	SDL_Quit();
 }
 
@@ -38,57 +45,76 @@ bool CGame::Start()
 {
 	// Esta variable nos ayudara a controlar la salida del juego...
 	int salirJuego = false;
-          
-	while (salirJuego == false){		
+	while (salirJuego == false)
+	{
 
-		//Maquina de estados       
-		switch (estado){
-		case Estado::ESTADO_INICIANDO: //INICIALIZAR......Estamos arrancando con el juego 
+		//Maquina de estados
+		switch (estado)
 		{
-										   nave = SDL_LoadBMP("../Data/MiNave.bmp");//Busca la imagen en las carpetas del programa
-										 //nave = IMG_LoadBMP_RW(SDL_RWFromFile("../Data/Tools.jpg", "rb")); //jala otra imagen
-										   
+		case Estado::ESTADO_INICIANDO:
 
-										   SDL_Rect Fuente;  // esta sera la posicion de la imagen que queremos imprimir en pantalla
-										   Fuente.x = 90;
-										   Fuente.y = 152;
-										   Fuente.w = 242;
-										   Fuente.h = 76;
+			Iniciando();
+			estado = ESTADO_MENU;
 
-										   SDL_Rect destino; // aqui le desimos en que posicion queremos que imprima en pantalla
-										   destino.x = 100;
-										   destino.y = 100;
-										   destino.w = 100;
-										   destino.h = 100;
 
-										   SDL_BlitSurface(nave, &Fuente, screen, &destino);//Pasar la imagen a la pantalla principal
 
-										   SDL_BlitSurface(nave, NULL, screen, NULL);//Pasar la imagen a la pantalla principal
+			break;
 
-										   SDL_FreeSurface(nave); // Limpia la imagen si no la ocupamos
-		}
+			//{		
+			//
 
-		break;
+			//								/*nave = SDL_LoadBMP("../Data/Eddie.bmp");
 
-	case Estado::ESTADO_MENU:	//JUGAR	
-		break;
+			//								 SDL_Rect Fuente;
+			//								 Fuente.x = 90;
+			//								 Fuente.y = 152;
+			//								 Fuente.w = 242;
+			//								 Fuente.h = 76;
+			//								 SDL_Rect destino;
+			//								 destino.x = 100;
+			//								 destino.y = 100;
+			//								 destino.w = 100;
+			//								 destino.h = 100;
 
-	case Estado::ESTADO_JUGANDO:	//JUGAR	
-		break;
+			//								 SDL_BlitSurface(nave, &Fuente, screen, &destino);
 
-	case Estado::ESTADO_TERMINANDO:	//JUGAR	
-		break;
+			//								 SDL_BlitSurface(nave, NULL, screen, NULL);
 
-	case Estado::ESTADO_FINALIZANDO: //SALIR
-		break;
+			//								 SDL_FreeSurface(nave);*/
+			//}
 
-		salirJuego = true;
-		break;
+		case Estado::ESTADO_MENU:
 
+			SDL_FillRect(screen, NULL , 0x000000); //manda pintar la pantalla de color negro
+		    
+			keys = SDL_GetKeyState(NULL); // para obtener la lectura de las tecas
+			if (keys[SDLK_DOWN]){ // tecla hacia abajo para que paraesca la imagen
+				nave->Mover(1);
+
+			}
+				nave-> Pintar(); // posocion en la que se pintara la imagen
+
+			
+			break;
+			
+
+		case Estado::ESTADO_JUGANDO:
+			break;
+		case Estado::ESTADO_FINALIZADO:
+			break;
+		case Estado::ESTADO_TERMINANDO:
+			salirJuego = true;
+			break;
 		};
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT){ salirJuego = true; }
+			if (event.type == SDL_KEYUP){}
 		
+			
+		}
 		SDL_Flip(screen);// imprimir en pantalla la variable screen
-		
-    }
+	}
 	return true;
 }
+

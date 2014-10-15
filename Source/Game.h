@@ -29,7 +29,7 @@ private:
 
 	SDL_Surface *screen;
 	Nave *nave;
-	Estado *estado;
+	Estado estado;
 
 
 };

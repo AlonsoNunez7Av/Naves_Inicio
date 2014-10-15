@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "Game.h"
@@ -15,15 +14,13 @@ CGame::CGame()
 void CGame::Iniciando(){
 
 
-
-
 	if (SDL_Init(SDL_INIT_AUDIO)){
 		printf("Error %s ", SDL_GetError());
 		exit(EXIT_FAILURE);
 
 	}
 
-	screen = SDL_SetVideoMode(WIDTH_SCREEN, HEIGTH_SCREEN, 24, SDL_HWSURFACE);
+	screen = SDL_SetVideoMode(WIDTH_SCREEN, HEIGHT_SCREEN, 24, SDL_HWSURFACE);
 
 	if (screen == NULL){
 		printf("Error %s ", SDL_GetError());
@@ -31,11 +28,9 @@ void CGame::Iniciando(){
 	}
 	SDL_Flip(screen);
 	SDL_WM_SetCaption("Mi primer Juego", NULL);
-	nave = new Nave (screen);
-	//nave -> CargarImagen("../Data/minave.bmp");
+	nave = new Nave(screen, "../Data/minave.bmp");
+	//nave->CargarImagen("../Data/minave.bmp");
 }
-
-
 void CGame::Finalize()
 {
 	SDL_Quit();
@@ -47,57 +42,25 @@ bool CGame::Start()
 	int salirJuego = false;
 	while (salirJuego == false)
 	{
-
 		//Maquina de estados
 		switch (estado)
 		{
 		case Estado::ESTADO_INICIANDO:
-
 			Iniciando();
 			estado = ESTADO_MENU;
-
-
-
 			break;
-
-			//{		
-			//
-
-			//								/*nave = SDL_LoadBMP("../Data/Eddie.bmp");
-
-			//								 SDL_Rect Fuente;
-			//								 Fuente.x = 90;
-			//								 Fuente.y = 152;
-			//								 Fuente.w = 242;
-			//								 Fuente.h = 76;
-			//								 SDL_Rect destino;
-			//								 destino.x = 100;
-			//								 destino.y = 100;
-			//								 destino.w = 100;
-			//								 destino.h = 100;
-
-			//								 SDL_BlitSurface(nave, &Fuente, screen, &destino);
-
-			//								 SDL_BlitSurface(nave, NULL, screen, NULL);
-
-			//								 SDL_FreeSurface(nave);*/
-			//}
 
 		case Estado::ESTADO_MENU:
-
-			SDL_FillRect(screen, NULL , 0x000000); //manda pintar la pantalla de color negro
-		    
-			keys = SDL_GetKeyState(NULL); // para obtener la lectura de las tecas
-			if (keys[SDLK_DOWN]){ // tecla hacia abajo para que paraesca la imagen
+			SDL_FillRect(screen, NULL, 0x000000);
+			keys = SDL_GetKeyState(NULL);
+			if (keys[SDLK_RIGHT]){
 				nave->Mover(1);
-
 			}
-				nave-> Pintar(); // posocion en la que se pintara la imagen
-
-			
+			if (keys[SDLK_LEFT]){
+				nave->Mover(1);
+			}
+			nave->Pintar();
 			break;
-			
-
 		case Estado::ESTADO_JUGANDO:
 			break;
 		case Estado::ESTADO_FINALIZADO:
@@ -109,12 +72,9 @@ bool CGame::Start()
 		while (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT){ salirJuego = true; }
-			if (event.type == SDL_KEYUP){}
-		
-			
+			if (event.type == SDL_KEYDOWN){}
 		}
 		SDL_Flip(screen);// imprimir en pantalla la variable screen
 	}
 	return true;
 }
-

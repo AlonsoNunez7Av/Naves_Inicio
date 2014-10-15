@@ -1,19 +1,18 @@
-#ifndef __Nave_H__
-#define __Nave_H__
+#ifndef __NAVE_H__
+#define __NAVE_H__
 #include "Sprite.h"
-class nave{
+
+class Nave{
 	int x;
 	int y;
-
-	Sprite *sprite; // este es un apuntador, este sprite remplaza al que tenemos en Game.ccp
-
+	Sprite *sprite;
 public:
-	Nave(SDL_Surface * screen, char * rutaIMagen){
-		~Nave();
-		void Pintar();
-		void Mover(int posicion);
+	Nave(SDL_Surface * screen, char * rutaImagen);
+	~Nave();
+	void Pintar();
+	void Mover(int posicion);
+
+
 };
-
-
 
 #endif

@@ -1,22 +1,23 @@
 #include "Nave.h"
 #include "Config.h"
 
-Nave::Nave(SDL_Surface * screen, char * rutaIMagen){
+Nave::Nave(SDL_Surface * screen, char * rutaImagen){
+	sprite = new Sprite(screen);
+	sprite->CargarImagen(rutaImagen);
+	x = (WIDTH_SCREEN / 2) - (sprite->WidthModule(0) / 2);
+	y = (HEIGHT_SCREEN - 80) - (sprite->HeightModule(0));
 
-	Sprite = new Sprite(screen);
-	sprite->CargarImagen(rutaIMagen);
-	x = (WIDTH_SCREEN / 2) - (sprite->WidthImage() / 2);
-	y = (HEIGTH_SCREEN - 80) - (sprite->HeghtImage());
 }
 
-Nave::~nave(){
-	delete Sprite;
+Nave::~Nave(){
+
+	delete sprite;
 }
 
 void Nave::Pintar(){
-	Sprite - PintarModulo(0, x, y);
+	sprite->PintarModulo(0, x, y);
 }
 
 void Nave::Mover(int posicion){
-	x + = posicion;
+	x += posicion;
 }

@@ -48,9 +48,11 @@ bool CGame::Start()
 		case Estado::ESTADO_INICIANDO:
 			Iniciando();
 			estado = ESTADO_MENU;
+			printf("\n1.Estado_Iniciado");
 			break;
 
 		case Estado::ESTADO_MENU:
+			printf("\n2.Estado_Menu");			
 			SDL_FillRect(screen, NULL, 0xFF0000);
 			keys = SDL_GetKeyState(NULL);
 			if (keys[SDLK_RIGHT]){
@@ -60,13 +62,22 @@ bool CGame::Start()
 				nave->Mover(1);
 			}
 			nave->Pintar();
+			estado = ESTADO_JUGANDO;
 			break;
+
 		case Estado::ESTADO_JUGANDO:
+			printf("\n3.Estado_Jugando");
+			estado = ESTADO_FINALIZADO;
 			break;
+
 		case Estado::ESTADO_FINALIZADO:
+			printf("\n4.Estado_Finalizado");
+			estado = ESTADO_TERMINANDO;
 			break;
 		case Estado::ESTADO_TERMINANDO:
+			printf("\n5.Estado_Terminado");
 			salirJuego = true;
+			getchar();
 			break;
 		};
 		while (SDL_PollEvent(&event))

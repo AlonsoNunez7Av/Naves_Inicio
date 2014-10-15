@@ -1,5 +1,5 @@
 #include "Sprite.h"
-#include "SDL.h"//Cambio1
+#include "SDL.h"
 
 
 
@@ -10,12 +10,12 @@ void Sprite::CargarImagen(char * ruta){
 Sprite::Sprite(SDL_Surface * screen)
 {
 	this->screen = screen;
-};//Cambio2
+};
 
 Sprite::~Sprite()
 {
 	SDL_FreeSurface(image);
-};//Cambio3
+};
 /*void Sprite::PintarModulo(int id, int x, int y, int w, int h)
 {
 SDL_Rect src;
@@ -25,7 +25,7 @@ src.w = w;
 src.h = h;
 
 SDL_BlitSurface(image, &src, screen, NULL);
-};//Cambio4	*/
+};*/
 
 void Sprite::PintarModulo(int id, int x, int y)
 {

@@ -51,7 +51,7 @@ bool CGame::Start()
 			break;
 
 		case Estado::ESTADO_MENU:
-			SDL_FillRect(screen, NULL, 0x000000);
+			SDL_FillRect(screen, NULL, 0xFF0000);
 			keys = SDL_GetKeyState(NULL);
 			if (keys[SDLK_RIGHT]){
 				nave->Mover(1);

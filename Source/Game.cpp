@@ -39,6 +39,7 @@ void CGame::Finalize()
 bool CGame::Start()
 {
 	// Esta variable nos ayudara a controlar la salida del juego...
+	int band = 0;
 	int salirJuego = false;
 	while (salirJuego == false)
 	{
@@ -50,35 +51,44 @@ bool CGame::Start()
 			estado = ESTADO_MENU;
 			printf("\n1.Estado_Iniciado");
 			break;
-
 		case Estado::ESTADO_MENU:
-			printf("\n2.Estado_Menu");			
+
+			printf("\n2.Estado_Menu");
 			SDL_FillRect(screen, NULL, 0xFF0000);
 			keys = SDL_GetKeyState(NULL);
-			if (keys[SDLK_RIGHT]){
+			if (keys[SDLK_RIGHT] && !esLimitePantalla(nave, BORDE_DERECHO | BORDE_SUPERIOR)){
 				nave->Mover(1);
 			}
-			if (keys[SDLK_LEFT]){
-				nave->Mover(1);
-			}
-			nave->Pintar();
-			estado = ESTADO_JUGANDO;
-			break;
 
+			nave->Pintar();
+			if (band <= 0)
+			{
+				estado = ESTADO_JUGANDO;
+				printf("\n1.Estado_Menu");
+			}
+			else
+			{
+				estado = ESTADO_FINALIZADO;
+				printf("\n1.Estado_Menu");
+			}
+			break;
+			getchar();
 		case Estado::ESTADO_JUGANDO:
 			printf("\n3.Estado_Jugando");
-			estado = ESTADO_FINALIZADO;
-			break;
-
-		case Estado::ESTADO_FINALIZADO:
-			printf("\n4.Estado_Finalizado");
 			estado = ESTADO_TERMINANDO;
 			break;
 		case Estado::ESTADO_TERMINANDO:
-			printf("\n5.Estado_Terminado");
-			salirJuego = true;
-			getchar();
+			printf("\n4.Estado_Terminado");
+			estado = ESTADO_MENU;
+			band = 1;
 			break;
+			
+		case Estado::ESTADO_FINALIZADO:
+			printf("\n5.Estado_Finalizado");
+			salirJuego = true;
+			break;
+			
+			
 		};
 		while (SDL_PollEvent(&event))
 		{
@@ -89,3 +99,24 @@ bool CGame::Start()
 	}
 	return true;
 }
+
+bool CGame::esLimitePantalla(Nave *objeto, int bandera) {
+
+	if (bandera & BORDE_IZQUIERDO)
+		if (objeto->obtenerX() <= 0)
+		    return true;
+
+	if (bandera & BORDE_SUPERIOR)
+		if (objeto->obtenerY() <= 0)
+			return true;
+
+	if (bandera & BORDE_DERECHO)
+		if (objeto->obtenerX() >= (WIDTH_SCREEN - objeto->obtenerW()))
+			return true;
+
+	if (bandera & BORDE_INFERIOR)
+		if (objeto->obtenerY() >= (HEIGHT_SCREEN-objeto->obtenerH()))
+			return true;
+
+	return false;
+};

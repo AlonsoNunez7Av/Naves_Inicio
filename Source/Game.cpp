@@ -30,13 +30,13 @@ void CGame::Iniciando(){
 	}
 
 	SDL_WM_SetCaption("Mi primer juego", NULL);
-	nave= new Nave(screen, "../Data/minave.bmp",(WIDTH_SCREEN/2)/*-(w/2)*/,(HEIGHT_SCREEN-80)/*-(h)*/);
+	nave= new Nave(screen, "../Data/minave.bmp",(WIDTH_SCREEN/2)/*-(w/2)*/,(HEIGHT_SCREEN-80)/*-(h)*/,0);
+	menu = new Nave(screen, "../Data/fondomenu.bmp", 0,0,1);
 
-	//nave->CargarImagen("../Data/minave.bmp");
-	//enemigo = new Nave (screen,"../Data/enemigo.bmp",0,0);
+	
 	enemigoArreglo = new Nave*[10];
 	for (int i = 0 ; i<10; i++)
-	enemigoArreglo[i]= new Nave(screen,"../Data/enemigo.bmp",i*65,0);
+	enemigoArreglo[i]= new Nave(screen,"../Data/enemigo.bmp",i*65,0,2);
 		
 
 	//emigoParabola=-10.0f;
@@ -65,68 +65,49 @@ bool CGame::Start()
 		case Estado::ESTADO_INICIANDO:
 				Iniciando();
 			
-			//printf("\n1. ESTADO_INICIANDO");
-			
 			estado= ESTADO_MENU;
 				break;
 	case Estado::ESTADO_MENU:	//MENU
-		SDL_FillRect(screen, NULL,0x000000);
-				keys=SDL_GetKeyState(NULL);
-				//enemigo->Actualizar();
-					for ( int i=0; i<10; i++)
-						enemigoArreglo[i]-> Actualizar();
-				MoverEnemigo();
-				if(keys[SDLK_RIGHT]&& !esLimitePantalla(nave,BORDE_DERECHO)){
-
-					nave->Mover(8);
-				};
-
-				if(keys[SDLK_LEFT]&& !esLimitePantalla(nave,BORDE_IZQUIERDO)){
-					nave->Moverl(8);
-				};
-
-				if(keys[SDLK_UP]&& !esLimitePantalla(nave,BORDE_SUPERIOR)){
-					nave->Movera(8);
-
-					
-				};
-				if(keys[SDLK_DOWN]&& !esLimitePantalla(nave,BORDE_INFERIOR)){
-					nave->Moverab(8);
-				};
-						nave->Pintar();
-						
-			//	enemigo -> Pintar();
-			for ( int i=0; i<10; i++)
-						enemigoArreglo[i]-> Pintar();
-
-			/*	printf("\n2. ESTADO_MENU");
-
-				if(opc == 1)
-					estado= ESTADO_JUGANDO;
-				else
-					estado= ESTADO_FINALIZANDO;*/
-				
+		menu->Pintar();
+		//estado = ESTADO_JUGANDO;
 				break;
 		case Estado::ESTADO_JUGANDO: //JUGANDO
 				
-			/*
-				printf("\n3. ESTADO_JUGANDO");
-				estado= ESTADO_TERMINANDO;*/
+			SDL_FillRect(screen, NULL, 0x000000);
+			keys = SDL_GetKeyState(NULL);
+			
+			for (int i = 0; i<10; i++)
+				enemigoArreglo[i]->Actualizar();
+			MoverEnemigo();
+
+			if (keys[SDLK_RIGHT] && !esLimitePantalla(nave, BORDE_DERECHO)){
+
+				nave->Mover(8);
+			};
+
+			if (keys[SDLK_LEFT] && !esLimitePantalla(nave, BORDE_IZQUIERDO)){
+				nave->Moverl(8);
+			};
+
+			if (keys[SDLK_UP] && !esLimitePantalla(nave, BORDE_SUPERIOR)){
+				nave->Movera(8);
+
+
+			};
+			if (keys[SDLK_DOWN] && !esLimitePantalla(nave, BORDE_INFERIOR)){
+				nave->Moverab(8);
+			};
+			nave->Pintar();
+
+			for (int i = 0; i<10; i++)
+				enemigoArreglo[i]->Pintar();
 				
 				break;
 		case Estado::ESTADO_TERMINANDO: //TERMINADO
-			
-		/*		printf("\n4. ESTADO_TERMINADO");
-				opc =2;
-				estado=ESTADO_MENU;*/
-				
+		
 				break;
 		case Estado::ESTADO_FINALIZANDO: //SALIR
-				
-				/*printf("\n5. ESTADO_FINALIZADO");
-				getchar();
-				opc =1;
-				salirJuego = true;*/
+		
 			break;
 		}
 	

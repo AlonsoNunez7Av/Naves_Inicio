@@ -33,8 +33,10 @@ Uint8*keys;
 SDL_Event event;
 SDL_Surface *screen;
 Nave  *nave;
-//Nave *enemigo;
 Nave**enemigoArreglo;
+Nave*menu;
+Nave*texto;
+Nave*fondo;
 
 	Estado estado;
 	float  enemigoParabola;

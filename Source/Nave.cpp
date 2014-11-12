@@ -3,22 +3,18 @@
 
 
 
-Nave::Nave(SDL_Surface* screen, char * rutaImagen,  int x, int y){
+Nave::Nave(SDL_Surface* screen, char * rutaImagen,  int x, int y, int module){
 
-
+	moduleUsing = module;
 	sprite = new Sprite(screen);
 	sprite->CargarImagen(rutaImagen);
-	w= sprite->WidthModule(0);
-	h=sprite->HeightModule(0);
+	w= sprite->WidthModule(moduleUsing);
+	h=sprite->HeightModule(moduleUsing);
 	this ->x=x;
 	this ->y=y;
 	stepsActual=0;
 	posisiconBrinco=0;
 	posicionaActual=0;
-
-
-	//
-//	
 
 }
 
@@ -31,7 +27,7 @@ Nave::~Nave()
 
 void Nave::Pintar()
 {
-	sprite->PintarModulo(0,x,y);
+	sprite->PintarModulo(moduleUsing,x,y);
 
 }
 

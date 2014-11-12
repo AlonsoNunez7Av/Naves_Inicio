@@ -13,12 +13,11 @@ class Nave{
 	int posisiconBrinco;
 	int stepsActual;
 	int stepsFinal;
-
-
+	int moduleUsing; // modulo en uso
 	Sprite * sprite;
 	
 public:
-	Nave(SDL_Surface* screen, char *rutaImagen,int x, int y);
+	Nave(SDL_Surface* screen, char *rutaImagen,int x, int y, int module);
 	
 
 	~Nave();

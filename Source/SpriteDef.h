@@ -13,7 +13,7 @@ class SpriteDef{
 	};
 
 public:
-	Modulo modulos[1];
+	Modulo modulos[3];
 	SpriteDef();//Constructor
 
 

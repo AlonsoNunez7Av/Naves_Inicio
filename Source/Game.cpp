@@ -31,9 +31,11 @@ void CGame::Iniciando(){
 
 	SDL_WM_SetCaption("Mi primer juego", NULL);
 	nave= new Nave(screen, "../Data/minave.bmp",(WIDTH_SCREEN/2)/*-(w/2)*/,(HEIGHT_SCREEN-80)/*-(h)*/,0);
-	menu = new Nave(screen, "../Data/fondomenu.bmp", 0,0,1);
-
-	
+	menu = new Nave(screen, "../Data/fondo5.bmp",0,0,1);
+	titulo = new Nave(screen, "../Data/titulo.bmp",50,0,1);
+	inicio = new Nave(screen, "../Data/iniciar.bmp",150,100,1);
+	salir = new Nave(screen, "../Data/salir.bmp", 150, 200, 1);
+	nombre = new Nave(screen, "../Data/nombre.bmp", 400, 400, 1);
 	enemigoArreglo = new Nave*[10];
 	for (int i = 0 ; i<10; i++)
 	enemigoArreglo[i]= new Nave(screen,"../Data/enemigo.bmp",i*65,0,2);
@@ -69,6 +71,10 @@ bool CGame::Start()
 				break;
 	case Estado::ESTADO_MENU:	//MENU
 		menu->Pintar();
+		titulo->Pintar();
+		inicio->Pintar();
+		salir->Pintar();
+		nombre->Pintar();
 		//estado = ESTADO_JUGANDO;
 				break;
 		case Estado::ESTADO_JUGANDO: //JUGANDO

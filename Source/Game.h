@@ -34,9 +34,12 @@ SDL_Event event;
 SDL_Surface *screen;
 Nave  *nave;
 Nave**enemigoArreglo;
-Nave*menu;
-Nave*texto;
-Nave*fondo;
+Nave *menu;
+Nave *titulo;
+Nave *inicio;
+Nave *salir;
+Nave *fondo;
+Nave *nombre;
 
 	Estado estado;
 	float  enemigoParabola;

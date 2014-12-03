@@ -1,139 +1,74 @@
 #include "Nave.h"
 #include "Config.h"
-
-
-
-Nave::Nave(SDL_Surface* screen, char * rutaImagen,  int x, int y, int module){
-
-	moduleUsing = module;
-	sprite = new Sprite(screen);
-	sprite->CargarImagen(rutaImagen);
-	w= sprite->WidthModule(moduleUsing);
-	h=sprite->HeightModule(moduleUsing);
-	this ->x=x;
-	this ->y=y;
-	stepsActual=0;
-	posisiconBrinco=0;
-	posicionaActual=0;
+void Nave::Pintar(){
+	nave->Pintar();
 
 }
 
-
-Nave::~Nave()
-{
-	delete sprite;
-}
-
-
-void Nave::Pintar()
-{
-	sprite->PintarModulo(moduleUsing,x,y);
+Nave ::Nave(SDL_Surface * screen, char * rutaImagen, int x, int y, int module){
+nave = new Objeto (screen, rutaImagen, x, y, module);
+bala = new Objeto*[MAXIMO_BALAS];
+for(int i=0; i<MAXIMO_BALAS; i++){
+bala [i]= new Objeto(screen, "../Data/balas.bmp", 0,0, MODULO_BALAS_BALA1);
+bala[i]-> SetVisible(false);
 
 }
-
-void Nave::Mover(int posicion){
-
-	x += posicion;
-
+balasVisibles = 0;
 }
 
-void Nave::Moverl(int posicion){
+void Nave:: MoverIzquierda(int valor){
+	nave->MoverIzquierda(valor);
 
-	x -= posicion;
-	
 }
-
-void Nave::Movera(int posicion){
-	y -=posicion;
-	
-}
-void Nave::Moverab(int posicion){
-
-	y+=posicion;
-
+	void Nave:: MoverDerecha(int valor){
+		nave->MoverDerecha(valor);
 
 }
 
-int Nave::obtenerX(){ return x;}
-
-int Nave::obtenerY(){ return y;}
-
-int Nave::obtenerW(){ return w;}
-
-int Nave::obtenerH(){ return h;}
-
-
-void Nave::ponerEn(int x, int y){
-
-
-
-	this->x=x;
-	this->y=y;
+	void Nave:: MoverArriba(int valor){
+		nave->MoverArriba(valor);
 }
-
-void Nave::Mover(int brinco, int puntoFinal){
-		if(posisiconBrinco<=0){
-	posisiconBrinco=brinco;
-	posicionFinal=puntoFinal;
-		}
+	void Nave::MoverAbajo(int valor){
+		nave->MoverAbajo(valor);
 
 }
 
-void Nave::Actualizar(){
-	if(posisiconBrinco!=0){
-		
-		if(posicionaActual<=posicionFinal){
-			Mover(posisiconBrinco);
-			posicionaActual++;
-		}
-		
-		else{
-			TerminarAnimacion();
-
-		}
-
+	Objeto * Nave::GetNaveObjeto(){
+		return nave;
 	}
 
-}
-
-void Nave::SetStep(int stepsFinal){
-
-
-
-	this->stepsFinal=stepsFinal;
-
-
-}
-void Nave:: IncrementarStep(){ 
-	stepsActual++;
-	if(stepsActual>=stepsFinal)
-		stepsActual=0;
-}
-int Nave::ObtenerStepActual(){ 
+	void Nave:: Disparar(int tipo, int valor){
+		
+		bala[balasVisibles]-> SetVisible(true);
+		switch(tipo){
+			case NAVE_PROPIA:
+		bala[balasVisibles]->ponerEn(nave->obtenerX()+nave->obtenerW()/2,nave->obtenerY());
+		break;
+			case NAVE_ENEMIGO:
+				bala[balasVisibles]->ponerEn(nave->obtenerX()+nave->obtenerW()/2,nave->obtenerY()+nave->obtenerH());
+				break;
+		}
+		balasVisibles++;
+		if (balasVisibles>=MAXIMO_BALAS)//maximo de balas por nivel
+			balasVisibles = 0;
+	}
 	
-	
-	return stepsActual;
 
+	void Nave:: Actualizar(int tipo, int valor){
+		for(int i=0; i<MAXIMO_BALAS; i++){
+		bala[i]->Pintar();
+		switch(tipo){
+		case NAVE_PROPIA:
+		bala[i]->MoverArriba(valor); ///CODIGO PARA MOVER ARRIBA
+		break;
+		case NAVE_ENEMIGO:
+			bala[i]->MoverArriba(-valor); ///CODIGO PARA MOVER ABAJO
+			break;
+		}
+	}
+	}
 
-}
-bool Nave::IsRunningAnimacion(){
-
-
-
-	if( posisiconBrinco==0)
-		return false;
-	else 
-		return true;
-
-
-
-}
-
-void Nave::TerminarAnimacion(){
-
-		    posisiconBrinco=0;
-			posicionaActual=0;
-			posicionFinal=0;
-			IncrementarStep();
-
-}
+	void Nave::AutoDisparar(int efectividad, int valor){
+		if (rand() % 100<efectividad)
+		Disparar(NAVE_ENEMIGO,valor);
+	}

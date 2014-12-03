@@ -1,50 +1,59 @@
+
 #include <SDL.h>
 #include <SDL_image.h>
+#include "Objeto.h"
 #include "Nave.h"
-
-
-
-
-class CGame
+#include "Stage.h"
+class CGame 
 {
 public:
-
-	enum Estado{
-		ESTADO_INICIANDO,
-		ESTADO_MENU,
-		ESTADO_JUGANDO,
-		ESTADO_TERMINANDO,
-		ESTADO_FINALIZANDO,
-	};
-
 	bool Start();
 	static CGame instanceGame;
 
 	CGame();
-	void Finalize();
-
+	void Finalize();  
+	enum Estado{
+		ESTADO_INICIANDO,
+		ESTADO_MENU,
+		ESTADO_PRE_JUGANDO,
+		ESTADO_JUGANDO,
+		ESTADO_TERMINADO,
+		ESTADO_FINALIZADO,
+		};
 
 private:
+
+	void InicializandoStage();
 	void Iniciando();
 	void MoverEnemigo();
-	bool esLimitePantalla(Nave*objeto, int bandera);
+	bool esLimitePantalla(Objeto *objeto, int bandera);
 	
-Uint8*keys;
-SDL_Event event;
-SDL_Surface *screen;
-Nave  *nave;
-Nave**enemigoArreglo;
-Nave *menu;
-Nave *titulo;
-Nave *inicio;
-Nave *salir;
-Nave *fondo;
-Nave *nombre;
+	
+	void Menu();
+	int nivelActual;
+	int enemigosEliminados;
+	int menuSeleccion;
+
+	Uint8 *keys;
+	SDL_Event event;
+
+	SDL_Surface *screen;
+	Nave *nave;
+	Nave **enemigoArreglo;
+
+	Stage niveles[4];
+
+
+	Objeto *titulo; // Titulo del juego
+	Objeto *menu; // Menu del juego
+	Objeto *texto; // Textos del juego
+	Objeto *fondo; // Fondos del juego
+
 
 	Estado estado;
-	float  enemigoParabola;
+
+	float enemigoParabola;
 	unsigned int frames;
 	unsigned int tiempoFrameInicio;
 	unsigned int tiempoFrameFinal;
-
 };
